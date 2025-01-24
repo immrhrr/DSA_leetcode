@@ -16,122 +16,37 @@ public:
             return root;
         }
         queue<TreeNode*>q;
-        vector<int>level_sum;
-        q.push(root);
-        
-        while(!q.empty()){
-            int n=q.size();
-            int temp=0;
-            for(int i=0;i<n;i++){
-                TreeNode* curr=q.front();
-                q.pop();
-                temp+=curr->val;
-                if(curr->left){
-                    q.push(curr->left);
-                }
-                if(curr->right){
-                    q.push(curr->right);
-                }
-
-            }
-            level_sum.push_back(temp);
-        }
         root->val=0;
         q.push(root);
-        int level=0;
+        long long level_sum=root->val;
         while(!q.empty()){
-           
             int n=q.size();
+            long long temp=0;
+            
             for(int i=0;i<n;i++){
-                int sibling_sum=0;
                 TreeNode* curr=q.front();
                 q.pop();
+                long long sib=0;
                 if(curr->left){
-                    sibling_sum+=curr->left->val;
+                    sib+=curr->left->val;
                 }
                 if(curr->right){
-                    sibling_sum+=curr->right->val;
+                    sib+=curr->right->val;
                 }
-               
-                if(curr->right){
-                    curr->right->val=level_sum[level+1]-sibling_sum;
-                    q.push(curr->right);
-                }
+               temp+=sib;
                 if(curr->left){
-                    curr->left->val=level_sum[level+1]-sibling_sum;
+                    curr->left->val=sib;
                     q.push(curr->left);
                 }
+                if(curr->right){
+                    curr->right->val=sib;
+                    q.push(curr->right);
+                }
+                curr->val=level_sum-curr->val;
             }
-            level++;
+            level_sum=temp;
+            
         }
         return root;
     }
 };
-
-
-
-
-
-
-// class Solution {
-// public:
-//     TreeNode* replaceValueInTree(TreeNode* root) {
-//         if (!root) {
-//             return root;
-//         }
-
-//         queue<TreeNode*> q;
-//         vector<int> level_sum;
-
-//         // Calculate the sum of values at each level
-//         q.push(root);
-//         while (!q.empty()) {
-//             int n = q.size();
-//             int temp = 0;
-//             for (int i = 0; i < n; i++) {
-//                 TreeNode* curr = q.front();
-//                 q.pop();
-//                 temp += curr->val;
-
-//                 if (curr->left) {
-//                     q.push(curr->left);
-//                 }
-//                 if (curr->right) {
-//                     q.push(curr->right);
-//                 }
-//             }
-//             level_sum.push_back(temp);
-//         }
-
-//         // Replace values in the tree
-//         root->val = 0; // Root's value is always 0
-//         q.push(root);
-//         int level = 0;
-
-//         while (!q.empty()) {
-//             int n = q.size();
-//             for (int i = 0; i < n; i++) {
-//                 TreeNode* curr = q.front();
-//                 q.pop();
-
-//                 // Calculate sibling sum for this node
-//                 int sibling_sum = 0;
-//                 if (curr->left) sibling_sum += curr->left->val;
-//                 if (curr->right) sibling_sum += curr->right->val;
-
-//                 // Update child nodes
-//                 if (curr->left) {
-//                     curr->left->val = level_sum[level + 1] - sibling_sum;
-//                     q.push(curr->left);
-//                 }
-//                 if (curr->right) {
-//                     curr->right->val = level_sum[level + 1] - sibling_sum;
-//                     q.push(curr->right);
-//                 }
-//             }
-//             level++;
-//         }
-
-//         return root;
-//     }
-// };
