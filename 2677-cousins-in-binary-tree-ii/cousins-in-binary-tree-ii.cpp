@@ -18,15 +18,15 @@ public:
         queue<TreeNode*>q;
         root->val=0;
         q.push(root);
-        long long level_sum=root->val;
+     int  level_sum=root->val;
         while(!q.empty()){
             int n=q.size();
-            long long temp=0;
+           int temp=0;
             
             for(int i=0;i<n;i++){
                 TreeNode* curr=q.front();
                 q.pop();
-                long long sib=0;
+                int sib=0;
                 if(curr->left){
                     sib+=curr->left->val;
                 }
