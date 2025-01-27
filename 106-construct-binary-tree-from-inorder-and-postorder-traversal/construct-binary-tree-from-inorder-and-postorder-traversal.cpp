@@ -17,8 +17,9 @@ public:
         }
         TreeNode* root=new TreeNode(postorder[index]);
         int position=mp[postorder[index]];
-        root->right=Tree(inorder,postorder,position+1,inEnd,index-1,mp);
+       
         root->left=Tree(inorder,postorder,inStart,position-1,index-(inEnd-position)-1,mp);
+         root->right=Tree(inorder,postorder,position+1,inEnd,index-1,mp);
         return root;
     }
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
