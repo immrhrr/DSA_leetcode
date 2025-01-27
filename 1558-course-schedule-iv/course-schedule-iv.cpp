@@ -8,6 +8,9 @@ public:
         }
         bool flag=false;
         for(int i=0;i<adj[curr].size();i++){
+            if(flag){
+                return true;
+            }
             int temp=adj[curr][i];
              if(dest==temp){
             return true;
