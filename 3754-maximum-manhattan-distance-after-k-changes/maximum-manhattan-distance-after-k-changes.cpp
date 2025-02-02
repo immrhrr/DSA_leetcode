@@ -2,26 +2,29 @@ class Solution {
 public:
     int maxDistance(string s, int k) {
         int n=s.size();
-        unordered_map<char,int>mp;
-        mp['N']=0; mp['E']=0;mp['S']=0;mp['W']=0;
         int ans=0;
+        int north=0;int east=0;int south=0;int west=0;
         int x=0,y=0;
         for(int i=0;i<n;i++){
             if(s[i]=='N'){
                 y++;
+                north++;
             }
              if(s[i]=='E'){
                 x++;
+                east++;
             }
              if(s[i]=='S'){
                 y--;
+                south++;
             }
              if(s[i]=='W'){
                 x--;
+                west++;
             }
-            mp[s[i]]++;
-            int vn=min(mp['N'],mp['S']);
-            int hn=min(mp['E'],mp['W']);
+            
+            int vn=min(north,south);
+            int hn=min(east,west);
             int temp=abs(x)+abs(y);
             int bonus=vn+hn;
             bonus=(min(k,bonus));
