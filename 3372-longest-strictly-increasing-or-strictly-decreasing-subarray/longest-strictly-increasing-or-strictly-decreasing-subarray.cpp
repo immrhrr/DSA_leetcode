@@ -21,8 +21,7 @@ public:
                 dec = 1;
             }
         }
-        ans=max(ans,inc);
-        ans=max(ans,dec);
+        ans=max({ans,inc,dec});
         return ans;
     }
 };
