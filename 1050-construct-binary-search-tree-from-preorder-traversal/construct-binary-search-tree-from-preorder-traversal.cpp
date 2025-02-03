@@ -15,7 +15,8 @@ public:
         if(index==preorder.size()||preorder[index]<lower||preorder[index]>upper){
             return NULL;
         }
-        TreeNode* root=new TreeNode(preorder[index++]);
+        TreeNode* root=new TreeNode(preorder[index]);
+        index++;
         root->left=bst(preorder,lower,root->val,index);
         root->right=bst(preorder,root->val,upper,index);
         return root;
