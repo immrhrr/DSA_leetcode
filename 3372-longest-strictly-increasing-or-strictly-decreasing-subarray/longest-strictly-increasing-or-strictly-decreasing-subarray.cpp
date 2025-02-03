@@ -14,10 +14,7 @@ public:
                 positive=1;
                 ans=max(ans,positive);
             }
-        }
-
-        for(int i=1;i<n;i++){
-            if(nums[i]<nums[i-1]){
+             if(nums[i]<nums[i-1]){
              negative++;
                 ans=max(ans,negative);
             }
