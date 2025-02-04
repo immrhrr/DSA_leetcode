@@ -11,9 +11,9 @@
 class Solution {
 public:
     TreeNode* func(TreeNode* root,int&x,int&y){
-        if(root==NULL){
-            return root;
-        }
+        // if(root==NULL){
+        //     return root;
+        // }
         if(root->val>x&&root->val>y){
             return func(root->left,x,y);
         }
