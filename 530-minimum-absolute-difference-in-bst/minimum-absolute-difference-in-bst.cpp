@@ -22,6 +22,7 @@ public:
         }
         prev=root->val;
         func(root->right,prev,ans);
+        return;
     }
     int getMinimumDifference(TreeNode* root) {
         int prev=INT_MIN;
