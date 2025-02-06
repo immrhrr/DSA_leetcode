@@ -11,9 +11,7 @@ public:
         }
         for(auto it:mp){
             int temp=it.second;
-           if(temp>1){
             ans+=(temp*(temp-1)*2*2);
-           }
         }
         return ans;
 
