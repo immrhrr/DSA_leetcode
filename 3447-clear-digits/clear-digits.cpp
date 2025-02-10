@@ -1,24 +1,14 @@
 class Solution {
 public:
     string clearDigits(string s) {
-        int n=s.size();
-        stack<char>st;
-        for(int i=0;i<n;i++){
-            if(s[i]>='a'&&s[i]<='z'){
-                st.push(s[i]);
-            }
-            else{
-                if(!st.empty()){
-                    st.pop();
-                }
+        int write = 0;  // Pointer to overwrite the valid character
+        for (char c : s) {
+            if (isdigit(c)) {
+                if (write > 0) write--;  // Remove last valid character
+            } else {
+                s[write++] = c;  // Overwrite s with valid chars
             }
         }
-        string ans;
-        while(!st.empty()){
-            ans+=st.top();
-            st.pop();
-        }
-        reverse(ans.begin(),ans.end());
-        return ans;
+        return s.substr(0, write);  // Return only the valid portion
     }
 };
