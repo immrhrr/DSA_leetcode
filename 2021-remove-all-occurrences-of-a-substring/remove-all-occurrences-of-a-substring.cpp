@@ -3,6 +3,9 @@ public:
     string removeOccurrences(string s, string part) {
         int n=s.size();
         int m=part.size();
+        if(m>n){
+            return s;
+        }
       //  reverse(part.begin(),part.end());
         stack<char>st;
         for(int i=0;i<n;i++){
