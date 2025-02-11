@@ -7,7 +7,7 @@ public:
         stack<char>st;
         for(int i=0;i<n;i++){
             st.push(s[i]);
-            if(st.top()==part[m-1]){
+            if(st.size()>=m&&st.top()==part[m-1]){
                 string temp;
                 for(int j=m-1;j>=0;j--){
                     if(!st.empty()&&st.top()==part[j]){
