@@ -49,7 +49,6 @@ public:
             }
             ans=max(ans,temp[i][0]+temp[i][1]);
         }
-       
         return ans;
     }
 };
