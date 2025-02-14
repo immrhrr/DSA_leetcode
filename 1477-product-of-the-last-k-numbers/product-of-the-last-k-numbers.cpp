@@ -1,47 +1,35 @@
 
 class ProductOfNumbers {
 public:
+    vector<int> pref;
+    int lastZero = -1;  // Position of the last zero
+    int index = 0;
 
-    //int pref[1000000];
-    vector<int>pref;
-    int index=0;
-    ProductOfNumbers() {
-        
-    }
+    ProductOfNumbers() {}
+
     void add(int num) {
-        if(num==0){
-            index=0;
-            pref={};
-            return;
+        if (num == 0) {
+            lastZero = index;  // Update the last zero position
+            pref.push_back(1);  // Push 1 to reset the product
+        } else {
+            if (index == 0) {
+                pref.push_back(num);
+            } else {
+                pref.push_back(pref.back() * num);
+            }
         }
-        if(index==0){
-            pref.push_back(num);
-           //pref[index]=num;
-            index++;
-        }
-        else{
-            pref.push_back(pref[index-1]*num);
-            //pref[index]=pref[index-1]*num;
-            index++;
-        }
-        return;   
+        index++;
     }
+
     int getProduct(int k) {
-        if(index-k<0||index==0){
+        // Check if the last zero is within the last `k` elements
+        if (lastZero >= index - k) {
             return 0;
         }
-        int tot=pref[index-1];
-        int divide=1;
-        if(index-k-1>=0){
-            divide=pref[index-k-1];
-        }
-        return tot/divide;
+
+        // Calculate the product using prefix products
+        int tot = pref.back();
+        int divide = (index - k - 1 >= 0) ? pref[index - k - 1] : 1;
+        return tot / divide;
     }
 };
-
-/**
- * Your ProductOfNumbers object will be instantiated and called as such:
- * ProductOfNumbers* obj = new ProductOfNumbers();
- * obj->add(num);
- * int param_2 = obj->getProduct(k);
- */
