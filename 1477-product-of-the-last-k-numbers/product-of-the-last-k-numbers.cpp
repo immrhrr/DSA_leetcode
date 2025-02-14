@@ -1,22 +1,40 @@
+
 class ProductOfNumbers {
 public:
-    vector<int>arr;
+
+    int pref[1000000];
+    int index=0;
     ProductOfNumbers() {
         
     }
     
     void add(int num) {
-        arr.push_back(num);
+        if(num==0){
+            index=0;
+            return;
+        }
+        if(index==0){
+            pref[index]=num;
+            index++;
+        }
+        else{
+            pref[index]=pref[index-1]*num;
+            index++;
+        }
+        return;
+        
     }
     
     int getProduct(int k) {
-        int n=arr.size();
-        int ans=1;
-       for(int i=n-1;i>=max(0,n-k);i--){
-        ans=ans*arr[i];
-       }
-       return ans;
-        
+        if(index-k<0||index==0){
+            return 0;
+        }
+        int tot=pref[index-1];
+        int divide=1;
+        if(index-k-1>=0){
+            divide=pref[index-k-1];
+        }
+        return tot/divide;
     }
 };
 
