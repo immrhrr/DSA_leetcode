@@ -2,29 +2,30 @@
 class ProductOfNumbers {
 public:
 
-    int pref[1000000];
+    //int pref[1000000];
+    vector<int>pref;
     int index=0;
     ProductOfNumbers() {
         
     }
-    
     void add(int num) {
         if(num==0){
             index=0;
+            pref={};
             return;
         }
         if(index==0){
-           pref[index]=num;
+            pref.push_back(num);
+           //pref[index]=num;
             index++;
         }
         else{
-            pref[index]=pref[index-1]*num;
+            pref.push_back(pref[index-1]*num);
+            //pref[index]=pref[index-1]*num;
             index++;
         }
-        return;
-        
+        return;   
     }
-    
     int getProduct(int k) {
         if(index-k<0||index==0){
             return 0;
