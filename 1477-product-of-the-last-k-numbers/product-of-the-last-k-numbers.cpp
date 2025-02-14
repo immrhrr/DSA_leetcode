@@ -14,7 +14,7 @@ public:
             return;
         }
         if(index==0){
-            pref[index]=num;
+           pref[index]=num;
             index++;
         }
         else{
