@@ -12,12 +12,15 @@ public:
        //check which number we can use to fill this index
         for (int num = n; num > 0; num--) {
            //this num is already used
+          
             if (used[num] == 1) {
                 continue;
             }
+            //try
             used[num] = 1;
             ans[index] = num;
             //if num is 1 only once to use
+             //explore
             if (num == 1) {
                 if (func(n, ans, used, index + 1) == true) {
                     return true;
@@ -37,6 +40,7 @@ public:
                     }
                 }
             }
+            //undo
             ans[index] = -1;
             used[num] = -1;
         }
