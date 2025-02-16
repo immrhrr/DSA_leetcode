@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool func(int& n, vector<int>& ans, vector<int>& used, int index) {
+    bool func(int& n, vector<int>& ans, vector<bool>& used, int index) {
         //we got ans
         if (index >= 2 * n - 1) {
             return true;
@@ -13,11 +13,11 @@ public:
         for (int num = n; num > 0; num--) {
            //this num is already used
           
-            if (used[num] == 1) {
+            if (used[num] == true) {
                 continue;
             }
             //try
-            used[num] = 1;
+            used[num] = true;
             ans[index] = num;
             //if num is 1 only once to use
              //explore
@@ -42,13 +42,13 @@ public:
             }
             //undo
             ans[index] = -1;
-            used[num] = -1;
+            used[num] = false;
         }
         return false;
     }
     vector<int> constructDistancedSequence(int n) {
         vector<int> ans(2 * n -1, -1);
-        vector<int> used(n+1, -1);
+        vector<bool> used(n+1, false);
         int index = 0;
         func(n, ans, used, index);
         return ans;
