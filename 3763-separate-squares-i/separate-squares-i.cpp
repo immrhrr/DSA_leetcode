@@ -44,6 +44,6 @@ public:
                 low = mid;
             }
         }
-        return low;
+        return low+0.0000000001;
     }
 };
