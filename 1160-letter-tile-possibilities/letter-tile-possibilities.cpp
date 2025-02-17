@@ -1,30 +1,29 @@
 class Solution {
 public:
-    void solve(string&tiles,unordered_set<string>&st,vector<bool>used,string curr){
-        st.insert(curr);
-        int n=tiles.size();
-        for(int i=0;i<n;i++){
-            if(used[i]){
+    void solve(vector<int>&frq,int &cnt){
+        cnt++;
+        for(int i=0;i<26;i++){
+            if(frq[i]==0){
                 continue;
             }
             //do
-            curr+=tiles[i];
-            used[i]=true;
+            frq[i]--;
             //explore
-            solve(tiles,st,used,curr);
+            solve(frq,cnt);
             //backtrack
-            curr.pop_back();
-            used[i]=false;
+            frq[i]++;
         }
-        
-
+        return;
     }
     int numTilePossibilities(string tiles) {
-        unordered_set<string>st;
         int n=tiles.size();
-        vector<bool>used(n,false);
-        string curr;
-        solve(tiles,st,used,curr);
-        return st.size()-1;
+        vector<int>frq(26,0);
+        for(int i=0;i<n;i++){
+            int ind=tiles[i]-'A';
+            frq[ind]++;
+        }
+        int cnt=0;
+        solve(frq,cnt);
+        return cnt-1;
     }
 };
