@@ -11,23 +11,16 @@
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        int cnt=0;
-        ListNode* temp=head;
-        if(head->next==NULL){
-            return head;
-        }
-        while(temp){
-            cnt++;
-            temp=temp->next;
-        }
-        int ind;
-        ind=cnt/2 +1;
-        temp=head;
-        while(ind>1){
-            temp=temp->next;
-            ind--;
-        }
-        return temp;
-        
+    ListNode* slow = head;
+    ListNode* fast = head;
+    
+    // Move the fast pointer twice as fast as the slow pointer
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
+    
+    return slow; // slow will now point to the second middle (if two middles exist)
+}
+
 };
