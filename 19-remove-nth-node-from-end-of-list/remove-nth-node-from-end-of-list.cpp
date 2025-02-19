@@ -43,7 +43,7 @@ public:
             temp=temp->next;
             cnt++;
         }
-        if(temp)
+        //if(temp)
         prev->next=temp->next;
         delete temp;
         return head;
