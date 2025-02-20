@@ -11,12 +11,9 @@
 class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
-        //linked list does not exists
-        if(head==NULL){
-            return NULL;
-        }
+        
         //no rotation or there is only one node so any rotation will nnot change it
-        if(k==0||head->next==NULL){
+        if(!head||k==0||head->next==NULL){
             return head;
         }
         int cnt=0;
