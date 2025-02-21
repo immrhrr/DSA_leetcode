@@ -10,39 +10,44 @@
  */
 class Solution {
 public:
-    void Reverse(ListNode*& head) {  // Pass by reference
-        ListNode* past = NULL;
-        ListNode* future = NULL;
-        ListNode* present = head;
-        while (present) {
-            future = present->next;
-            present->next = past;
-            past = present;
-            present = future;
-        }
-        head = past;  // Update head
-    }
-
+    
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        // Reverse both lists
-        // Reverse(l1);
-        // Reverse(l2);
-
-        int carry = 0;
-        ListNode* ans = new ListNode(0);
-        ListNode* tail = ans;
-
-        while (l1 || l2 || carry) {  // Handle all cases
-            int sum = (l1 ? l1->val : 0) + (l2 ? l2->val : 0) + carry;
-            carry = sum / 10;
-            tail->next = new ListNode(sum % 10);
-            tail = tail->next;
-            if (l1) l1 = l1->next;
-            if (l2) l2 = l2->next;
+        
+        int carry=0;
+        ListNode* temp1=l1;
+        ListNode* temp2=l2;
+        ListNode* ans=new ListNode(0);
+        ListNode* tail=ans;
+        while(temp1&&temp2){
+            int temp=temp1->val+temp2->val+carry;
+            int digit=temp%10;
+            carry=temp/10;
+            tail->next=new ListNode(digit);
+            temp1=temp1->next;
+            temp2=temp2->next;
+            tail=tail->next;
         }
-
-        ans = ans->next;
-       // Reverse(ans);  // Reverse final result
+        while(temp1){
+             int temp=temp1->val+carry;
+            int digit=temp%10;
+            carry=temp/10;
+            tail->next=new ListNode(digit);
+            temp1=temp1->next;
+            tail=tail->next;
+        }
+        while(temp2){
+            int temp=temp2->val+carry;
+            int digit=temp%10;
+            carry=temp/10;
+            tail->next=new ListNode(digit);
+            temp2=temp2->next;
+            tail=tail->next;
+        }
+        if(carry>0){
+            tail->next=new ListNode(carry);
+        }
+        ans=ans->next;
+      
         return ans;
     }
 };
