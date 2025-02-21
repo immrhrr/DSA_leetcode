@@ -11,29 +11,66 @@
  */
 class FindElements {
 public:
-    unordered_set<int>st;
-    void dfs(TreeNode* root,int temp){
-        root->val=temp;
-        st.insert(temp);
-        if(root->left){
-            dfs(root->left,2*root->val+1);
-        }
-        if(root->right){
-            dfs(root->right,2*root->val+2);
-        }
-    }
+    TreeNode* head; // Store the root
+
+    // Constructor to recover the tree
     FindElements(TreeNode* root) {
-        st.clear();
-        dfs(root,0);
-        
-        
+        head = root;
+        recoverTree(root, 0);
     }
-    
+
+    // Function to recover the tree
+    void recoverTree(TreeNode* node, int val) {
+        if (!node) return;
+        node->val = val;
+        if (node->left) recoverTree(node->left, 2 * val + 1);
+        if (node->right) recoverTree(node->right, 2 * val + 2);
+    }
+
+   
+
+    // Function to find if the target exists in the recovered tree
     bool find(int target) {
-        return st.count(target);
-        
+       
+
+        TreeNode* temp = head;
+        stack<int> st;
+        st.push(target);
+
+        // Compute path from target to root
+        int parent = (target - 1) / 2;
+        while (parent > 0) {
+            st.push(parent);
+            if (parent == 0) break;
+            parent = (parent - 1) / 2;
+        }
+
+        // Traverse from root following the stored path
+        while (!st.empty()) {
+            int value = st.top();
+            st.pop();
+
+            
+
+            if (value % 2 == 0) {
+
+                temp = temp->right; 
+                if(temp==NULL){
+                    return false;
+                }
+              
+            } else {
+                temp = temp->left;  // Move to left child
+                 if(temp==NULL){
+                    return false;
+                }
+            }
+        }
+        return true; // Successfully reached target node
     }
 };
+
+
 
 /**
  * Your FindElements object will be instantiated and called as such:
