@@ -10,21 +10,16 @@
  */
 class Solution {
 public:
-    ListNode* swapPairs(ListNode* head) {
+    ListNode* func(ListNode* &head){
         if(head==NULL||head->next==NULL){
             return head;
         }
-        ListNode* present=head->next;
-        ListNode* past= head;
-        while(past&&present){
-            swap(past->val,present->val);
-            if(present->next==NULL){
-                break;
-            }
-            past=present->next;
-            present=past->next;
-        }
-        return head;
-
+        ListNode* temp=head->next;
+        head->next=func(head->next->next);
+        temp->next=head;
+        return temp;
+    }
+    ListNode* swapPairs(ListNode* head) {
+        return func(head);
     }
 };
