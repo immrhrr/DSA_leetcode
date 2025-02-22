@@ -14,25 +14,29 @@ public:
     TreeNode* solve(string&s,int&i,int d){
         int j=i;
         int n=s.size();
+        //finding the number of dash
         while(j<n&&s[j]=='-'){
             j++;
         }
         int dash=j-i;
+        // we are at higher depth than required one
+        //so need to return back
         if(dash!=d){
             return NULL;
         }
+        //already traversed
         i=j;
         int num=0;
+        //finding the value to insert
         while(i<n&&isdigit(s[i])){
             num=(num*10)+(s[i]-'0');
             i++;
         }
+        //constructing the tree
         TreeNode* root=new TreeNode(num);
         root->left=solve(s,i,d+1);
         root->right=solve(s,i,d+1);
         return root;
-
-
     }
     TreeNode* recoverFromPreorder(string s) {
         int i=0;
