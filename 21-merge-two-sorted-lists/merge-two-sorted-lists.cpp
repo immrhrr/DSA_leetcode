@@ -11,35 +11,34 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode* t1=list1;
-        ListNode* t2=list2;
-        ListNode* head=new ListNode(0);
-        ListNode* tail=head;
-        while(t1&&t2){
-            //t1 bigger than t2 ka data
-            if(t1->val>t2->val){
-                tail->next=new ListNode(t2->val);
-                 t2=t2->next;
+        ListNode* t1 = list1;
+        ListNode* t2 = list2;
+        // creating dummy node
+        ListNode* head = new ListNode(0);
+        ListNode* tail = head;
+        while (t1 && t2) {
+            // t1 ka data is bigger than t2 ka data
+            if (t1->val > t2->val) {
+                tail->next = t2;
+                tail = tail->next;
+               
+                t2 = t2->next;
             }
-            else{
-                tail->next=new ListNode(t1->val);
-                 t1=t1->next;
+            // t2 ka data is bigger than or equal to t1 ka data
+            else {
+                tail->next = t1;
+                tail = tail->next;
+               
+                t1 = t1->next;
             }
-           
-           
-            tail=tail->next;
         }
-        while(t1){
-             tail->next=new ListNode(t1->val);
-             t1=t1->next;
-             tail=tail->next;
+        if(t1){
+            tail->next = t1;
         }
-        while(t2){
-             tail->next=new ListNode(t2->val);
-             t2=t2->next;
-             tail=tail->next;
+         if(t2){
+            tail->next = t2;
         }
-        head=head->next;
+        head = head->next;
         return head;
     }
 };
