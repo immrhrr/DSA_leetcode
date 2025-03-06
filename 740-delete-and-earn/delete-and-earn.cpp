@@ -15,6 +15,7 @@ public:
            prev2=prev1;
            prev1=curr;
         }
-        return curr;
+      //  return curr;
+      return prev1;
     }
 };
