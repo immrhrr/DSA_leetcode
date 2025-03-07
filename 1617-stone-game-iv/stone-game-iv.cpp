@@ -1,23 +1,25 @@
 class Solution {
 public:
-    bool solve(int n,vector<int>&dp){
+    bool solve(int n,unordered_map<int,int>&mp){
         if(n<=0){
             return false;
         }
-        if(dp[n]!=-1){
-            return dp[n];
+        if(mp.find(n)!=mp.end()){
+            return mp[n];
         }
+       
         for(int i=1;i*i<=n;i++){
-            if(solve(n-i*i,dp)==0){
-                dp[n]= true;
+            if(solve(n-i*i,mp)==0){
+                mp[n]= 1;
                 return true;
             }
         }
-        dp[n]=false;
+        mp[n]=0;
         return false;
     }
     bool winnerSquareGame(int n) {
-        vector<int>dp(1e5+1,-1);
-        return solve(n,dp);
+        unordered_map<int,int>mp;
+        
+        return solve(n,mp);
     }
 };
