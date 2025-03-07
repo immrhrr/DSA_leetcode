@@ -1,26 +1,15 @@
 class Solution {
 public:
-    unordered_map<int,int>mp;
-    bool solve(int n){
-        if(n<=0){
-            return false;
-        }
-        if(mp.find(n)!=mp.end()){
-            return mp[n];
-        }
-       
-        for(int i=1;i*i<=n;i++){
-            if(solve(n-i*i)==0){
-                mp[n]= 1;
-                return true;
+bool winnerSquareGame(int n) {
+    vector<bool> dp(n + 1, false);
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j * j <= i; j++) {
+            if (!dp[i - j * j]) {  // If the opponent loses, the current player wins
+                dp[i] = true;
+                break;
             }
         }
-        mp[n]=0;
-        return false;
     }
-    bool winnerSquareGame(int n) {
-        
-        
-        return solve(n);
-    }
+    return dp[n];
+}
 };
