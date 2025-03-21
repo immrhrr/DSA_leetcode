@@ -3,6 +3,8 @@ public:
     string longestPalindrome(string s) {
         int n=s.size();
         vector<vector<bool>>dp(n,vector<bool>(n,false));
+         int maxi=0;
+        int start=0;
         for(int len=1;len<=n;len++){
             for(int i=0;i<=n-len;i++){
                 int j=i+len-1;
@@ -19,12 +21,6 @@ public:
                         dp[i][j]=true;
                     }
                 }
-            }
-        }
-        int maxi=0;
-        int start=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
                 if(dp[i][j]&&j-i+1>maxi){
                     maxi=j-i+1;
                     start=i;
