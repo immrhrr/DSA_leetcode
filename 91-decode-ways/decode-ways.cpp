@@ -29,6 +29,7 @@ public:
     }
     int numDecodings(string digits) {
         int n = digits.size();
+        if(n==0||digits[0]=='0')return 0;
         vector<int> dp(n + 1, -1);
         return solve(digits, 0, dp);
     }
