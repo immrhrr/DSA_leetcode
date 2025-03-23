@@ -2,6 +2,7 @@ class Solution {
 public:
      int solve(string&digits,int ind,vector<int>&dp){
         int n=digits.size();
+        if(digits[ind]=='0')return 0;
         if(ind>=n){
             return 1;
         }
