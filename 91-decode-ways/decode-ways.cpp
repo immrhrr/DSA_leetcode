@@ -2,13 +2,14 @@ class Solution {
 public:
     int solve(string& digits, int ind, vector<int>& dp) {
         int n = digits.size();
-        //if the current digit is zero then it will not give answer
-        if (digits[ind] == '0')
-            return 0;
+        
         //got one valid message
         if (ind >= n) {
             return 1;
         }
+        //if the current digit is zero then it will not give answer
+        if (digits[ind] == '0')
+            return 0;
         //using memoization
         if (dp[ind] != -1)
             return dp[ind];
@@ -16,9 +17,7 @@ public:
         int onestep = 0;
         int twostep = 0;
        
-        // if the current digit is non zero then only we can take one step
-        // if (digits[ind] != '0')
-            onestep = solve(digits, ind + 1, dp);
+        onestep = solve(digits, ind + 1, dp);
         // check for valid two digit
         if (ind + 1 < n) {
             int d1 = digits[ind] - '0';
@@ -30,9 +29,7 @@ public:
     }
     int numDecodings(string digits) {
         int n = digits.size();
-
         vector<int> dp(n + 1, -1);
-
         return solve(digits, 0, dp);
     }
 };
