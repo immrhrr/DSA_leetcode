@@ -1,22 +1,29 @@
 class Solution {
 public:
-    bool canPlaceFlowers(vector<int>& flowerbed, int n) {
-        int c=1,empty=0;
-        for(auto i:flowerbed){
-            if(i==1)c=0;
+    bool canPlaceFlowers(vector<int>& arr, int n) {
+        int m=arr.size();
+        int temp=1;
+        int empty=0;
+        for(int i=0;i<m;i++){
+            if(arr[i]==1){
+                temp=0;
+            }
             else{
-                c++;
-                if(c==3){
+                temp++;
+                if(temp==3){
                     empty++;
-                    c=1;
+                    temp=1;
                 }
             }
         }
-        if(!flowerbed.back()){
-            c++;
-            if(c==3)
+        if(arr[m-1]==0){
+            temp++;
+            if(temp==3){
                 empty++;
+            }
         }
         return empty>=n;
+        
+        
     }
 };
