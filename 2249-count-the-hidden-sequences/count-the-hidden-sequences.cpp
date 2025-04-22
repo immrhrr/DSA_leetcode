@@ -1,9 +1,9 @@
 class Solution {
 public:
     int numberOfArrays(vector<int>& diff, int l, int u) {
-        int curr=100;
-        int mini=100;
-        int maxi=100;
+        int curr=l;
+        int mini=l;
+        int maxi=l;
         for(int i=0;i<diff.size();i++){
             curr=curr+diff[i];
             mini=min(mini,curr);
