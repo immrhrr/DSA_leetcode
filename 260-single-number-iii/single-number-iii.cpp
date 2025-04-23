@@ -6,7 +6,7 @@ public:
         for(int i=0;i<n;i++){
             xorr=xorr^nums[i];
         }
-        long long set_bit=xorr&-xorr;
+        int set_bit=xorr&-xorr;
         int g0=0;
         int g1=0;
         for(int i=0;i<n;i++){
