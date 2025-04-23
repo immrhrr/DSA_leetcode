@@ -8,21 +8,23 @@ public:
         }
         return curr;
     }
+
     int countLargestGroup(int n) {
         vector<int>temp(37,0);
+        int ans=0;
+        int maxi=0;
         for(int i=1;i<=n;i++){
             int sum=solve(i);
             temp[sum]++;
-        }
-        sort(temp.rbegin(),temp.rend());
-        int ans=1;
-        for(int i=1;i<=36;i++){
-            if(temp[i]==temp[0]){
-                ans++;
+           if(temp[sum]==maxi){
+            ans++;
+           }
+           else{
+            if(temp[sum]>maxi){
+                maxi=temp[sum];
+                ans=1;
             }
-            else{
-                break;
-            }
+           }
         }
         return ans;
     }
