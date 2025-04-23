@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int solve(int n){
+    int digitSum(int n){
         int curr=0;
         while(n>0){
             curr+=n%10;
@@ -14,7 +14,7 @@ public:
         int ans=0;
         int maxi=0;
         for(int i=1;i<=n;i++){
-            int sum=solve(i);
+            int sum=digitSum(i);
             temp[sum]++;
            if(temp[sum]==maxi){
             ans++;
