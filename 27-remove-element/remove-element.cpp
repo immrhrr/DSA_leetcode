@@ -7,12 +7,14 @@ public:
         while(i<n&&nums[i]!=val){
             i++;
         }
+        //no occ of val
         if(i==n)return n;
         int j=n-1;
         //find the first index from back where its not equal to val
         while(j>=0&&nums[j]==val){
             j--;
         }
+        //all are equal to val
         if(j==-1)return 0;
         while(i<j){
             swap(nums[i],nums[j]);
@@ -24,10 +26,7 @@ public:
             while(nums[j]==val){
                 j--;
             }
-           
-
         }
-        
         return i;
         
     }
