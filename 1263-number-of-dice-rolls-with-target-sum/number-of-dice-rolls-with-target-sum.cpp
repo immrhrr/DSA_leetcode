@@ -8,6 +8,9 @@ public:
         if(dp[n][sum]!=-1)return dp[n][sum];
         int ways=0;
         for(int i=1;i<=m;i++){
+            if(sum+n>x||sum+m*n<x){
+                continue;
+            }
             if(sum+i<=x){
                 ways=(ways+(solve(m,n-1,x,sum+i,dp))%mod)%mod;
                 
