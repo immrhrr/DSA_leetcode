@@ -9,18 +9,21 @@ public:
 
         vector<int> dist(n + 1, 1e9);
         dist[k] = 0;
+
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
         pq.emplace(0, k);
 
         while (!pq.empty()) {
             auto [d, node] = pq.top();
             pq.pop();
+
+            // ✅ Key line: skip if this is an outdated entry
             if (d > dist[node]) continue;
 
-            for (auto& [v, wt] : adj[node]) {
-                if (d + wt < dist[v]) {
-                    dist[v] = d + wt;
-                    pq.emplace(dist[v], v);
+            for (auto& [next, weight] : adj[node]) {
+                if (d + weight < dist[next]) {
+                    dist[next] = d + weight;
+                    pq.emplace(dist[next], next);
                 }
             }
         }
