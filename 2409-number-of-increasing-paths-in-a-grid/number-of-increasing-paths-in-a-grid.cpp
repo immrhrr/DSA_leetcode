@@ -21,13 +21,11 @@ public:
     int countPaths(vector<vector<int>>& matrix) {
         int m=matrix.size();
         int n=matrix[0].size();
-        
-        vector<vector<int>>dp(m+1,vector<int>(n+1,-1));
+        vector<vector<int>>dp(m,vector<int>(n,-1));
         int ans=0;
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 ans=(ans+(dfs(matrix,i,j,dp))%mod)%mod;
-               
             }
         }
         return ans;
