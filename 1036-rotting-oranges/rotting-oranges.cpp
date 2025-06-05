@@ -7,7 +7,7 @@ public:
         queue<pair<int, int>> q;
         vector<int> h = {1, 0, -1, 0};
         vector<int> v = {0, -1, 0, 1};
-        vector<vector<bool>> vis(m, vector<bool>(n, false));
+       
         int tot=0;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -33,8 +33,8 @@ public:
                 for (int i = 0; i < 4; i++) {
                     int nrow = r + h[i];
                     int ncol = c + v[i];
-                    if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n&&grid[nrow][ncol]==1&&vis[nrow][ncol]==false) {
-                        vis[nrow][ncol]=true;
+                    if (nrow >= 0 && nrow < m && ncol >= 0 && ncol < n&&grid[nrow][ncol]==1) {
+                        grid[nrow][ncol]=2;
                         tot--;
                         q.push({nrow,ncol});
                     }
