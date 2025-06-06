@@ -18,6 +18,8 @@ public:
                 for(int i=0;i<end.size();i++){
                     string temp=curr;
                     for(int j=0;j<26;j++){
+                        if (temp[i] == vec[j]) continue;
+
                         temp[i]=vec[j];
                         if(st.find(temp)!=st.end()){
                             if(temp==end)return ans;
