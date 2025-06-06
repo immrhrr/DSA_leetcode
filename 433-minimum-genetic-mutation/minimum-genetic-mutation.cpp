@@ -4,10 +4,8 @@ public:
         if(start==end)return 0;
         int n=bank.size();
         int ans=0;
-        unordered_set<string>st;
-        for(int i=0;i<n;i++){
-            st.insert(bank[i]);
-        }
+        unordered_set<string>st(bank.begin(),bank.end());
+        if(st.find(end)==st.end())return -1;
         queue<string>q;
         vector<char>vec={'A','T','G','C'};
         q.push(start);
