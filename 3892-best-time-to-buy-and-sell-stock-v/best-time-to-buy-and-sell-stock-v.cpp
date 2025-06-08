@@ -3,10 +3,12 @@ public:
     long long solve(vector<int>&prices,int k,int state,int ind,vector<vector<vector<long long>>>&dp){
         int n=prices.size();
         if(ind>=n){
+            //return 0;
            return  state == 0 ? 0 : LLONG_MIN;
         }
         if(k==0){
-            return state == 0 ? 0 : LLONG_MIN;
+            return 0;
+            //return state == 0 ? 0 : LLONG_MIN;
         }
         if(dp[k][state][ind]!=LLONG_MAX){
             return dp[k][state][ind];
