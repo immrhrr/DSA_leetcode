@@ -1,62 +1,45 @@
-
 class Solution {
-    // dp[ind][remK][state] caches solve(prices, remK, state, ind)
-    vector<vector<vector<long long>>> dp;
-    int n;
-
-    long long dfs(const vector<int>& prices, int remK, int state, int ind) {
-        // Base cases
-        if (ind >= n) 
-            return (state == 0 ? 0 : LLONG_MIN);
-        if (remK <= 0) 
-            return (state == 0 ? 0 : LLONG_MIN);
-
-        long long& memo = dp[ind][remK][state];
-        if (memo != LLONG_MAX) 
-            return memo;
-
-        long long ans;
-        if (state == 0) {
-            // idle → open long, open short, or skip
-            long long skip  = dfs(prices, remK,   0, ind + 1);
-
-            long long openL = dfs(prices, remK,   1, ind + 1);
-            long long rL    = (openL   == LLONG_MIN ? LLONG_MIN : openL   - prices[ind]);
-
-            long long openS = dfs(prices, remK,   2, ind + 1);
-            long long rS    = (openS   == LLONG_MIN ? LLONG_MIN : openS   + prices[ind]);
-
-            ans = max({ skip, rL, rS });
-        }
-        else if (state == 1) {
-            // holding long → close to idle or skip
-            long long skip      = dfs(prices, remK,   1, ind + 1);
-
-            long long closeIdle = dfs(prices, remK-1, 0, ind + 1);
-            if (closeIdle != LLONG_MIN) 
-                closeIdle += prices[ind];
-
-            ans = max(skip, closeIdle);
-        }
-        else { // state == 2
-            // holding short → close to idle or skip
-            long long skip      = dfs(prices, remK,   2, ind + 1);
-
-            long long closeIdle = dfs(prices, remK-1, 0, ind + 1);
-            if (closeIdle != LLONG_MIN) 
-                closeIdle -= prices[ind];
-
-            ans = max(skip, closeIdle);
-        }
-
-        return memo = ans;
-    }
-
 public:
+    long long solve(vector<int>&prices,int k,int state,int ind,vector<vector<vector<long long>>>&dp){
+        int n=prices.size();
+        if(ind>=n){
+           return  state == 0 ? 0 : LLONG_MIN;
+        }
+        if(k==0){
+            return state == 0 ? 0 : LLONG_MIN;
+        }
+        if(dp[k][state][ind]!=LLONG_MAX){
+            return dp[k][state][ind];
+        }
+        long long ans=0;
+        if(state==0){
+            long long buy = solve(prices,k,1,ind+1,dp);
+            long long sell = solve(prices,k,2,ind+1,dp);
+            long long skip = solve(prices,k,0,ind+1,dp);
+            long long net_buy = (buy==LLONG_MIN) ? LLONG_MIN : buy-prices[ind];
+            long long net_sell = (sell==LLONG_MIN) ? LLONG_MIN : sell + prices[ind];
+            ans= max({skip,net_buy,net_sell});
+        }
+        else if(state==1){
+            long long sell = solve(prices,k-1,0,ind+1,dp);
+            long long skip = solve(prices,k,1,ind+1,dp);
+            long long net_sell = (sell==LLONG_MIN) ? LLONG_MIN : sell + prices[ind];
+            ans=max({skip,net_sell});
+        }
+         else {
+            long long buy = solve(prices,k-1,0,ind+1,dp);
+            long long skip = solve(prices,k,2,ind+1,dp);
+            long long net_buy = (buy==LLONG_MIN) ? LLONG_MIN : buy - prices[ind];
+            ans=max({skip,net_buy});
+        }
+        return dp[k][state][ind]=ans;
+    }
     long long maximumProfit(vector<int>& prices, int k) {
-        n = prices.size();
-        // DP dimensions: [n][k+1][3], init to LLONG_MAX
-        dp.assign(n, vector<vector<long long>>(k+1, vector<long long>(3, LLONG_MAX)));
-        return dfs(prices, k, 0, 0);
+        int state=0;
+        int ind=0;
+        int n=prices.size();
+        vector<vector<vector<long long>>>dp(k+1,vector<vector<long long>>(4,vector<long long>(n+1,LLONG_MAX)));
+        return solve(prices,k,state,ind,dp);
+        
     }
 };
