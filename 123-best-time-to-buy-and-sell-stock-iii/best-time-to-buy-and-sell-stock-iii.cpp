@@ -1,22 +1,29 @@
-
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int t1Cost   = INT_MAX;  // min price to buy first stock
-        int t2Cost   = INT_MAX;  // effective min price to buy second stock (price - t1Profit)
-        int t1Profit = 0;        // max profit after first sell
-        int t2Profit = 0;        // max profit after second sell
+        int n = prices.size();
+        if (n == 0) return 0;
 
-        for (int p : prices) {
-            // For first transaction:
-            t1Cost   = min(t1Cost, p);
-            t1Profit = max(t1Profit, p - t1Cost);
+        vector<int> left(n, 0);   // Max profit for 1st transaction [0...i]
+        vector<int> right(n, 0);  // Max profit for 2nd transaction [i...n-1]
 
-            // For second transaction (we reinvest t1Profit):
-            t2Cost   = min(t2Cost, p - t1Profit);
-            t2Profit = max(t2Profit, p - t2Cost);
+        int min_price = prices[0];
+        for (int i = 1; i < n; ++i) {
+            min_price = min(min_price, prices[i]);
+            left[i] = max(left[i - 1], prices[i] - min_price);
         }
 
-        return t2Profit;
+        int max_price = prices[n - 1];
+        for (int i = n - 2; i >= 0; --i) {
+            max_price = max(max_price, prices[i]);
+            right[i] = max(right[i + 1], max_price - prices[i]);
+        }
+
+        int max_profit = 0;
+        for (int i = 0; i < n; ++i) {
+            max_profit = max(max_profit, left[i] + right[i]);
+        }
+
+        return max_profit;
     }
 };
