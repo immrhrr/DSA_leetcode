@@ -5,8 +5,8 @@ public:
         int steps=0;
         int window_end=0;
         int farthest=0;
-        for(int i=0;i<n;i++){
-            if(window_end>=n-1)return steps;
+        for(int i=0;i<n-1;i++){
+            //if(window_end>=n-1)return steps;
             farthest=max(farthest,i+nums[i]);
             if(i==window_end){
                 window_end=farthest;
