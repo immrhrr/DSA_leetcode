@@ -21,9 +21,12 @@ public:
         }
 
         // Update max answer
-        ans = max(ans, 1 + longest + secondLongest);
-
-        return 1 + longest; // include current node
+        int koi_ek=max(longest,secondLongest)+1;
+        int root=1;
+        int neeche=longest+secondLongest+1;
+        ans=max({ans,koi_ek,neeche,root});
+        return max({koi_ek,root});
+        
     }
 
     int longestPath(vector<int>& parent, string s) {
