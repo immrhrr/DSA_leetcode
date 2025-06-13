@@ -1,19 +1,13 @@
 class Solution {
 public:
-    bool is_possible(vector<int>&nums,int &limit,int &p){
+    bool is_possible(vector<int>&nums,int limit,int p){
         int n=nums.size();
         int cnt=0;
-        int last=-1;
         for(int i=1;i<n;i++){
-            if(last==i-1){
-                continue;
-            }
-            else{
                 if(nums[i]-nums[i-1]<=limit){
                     cnt++;
-                    last=i;
+                    i++;
                 }
-            }
         }
         return cnt>=p;
     }
