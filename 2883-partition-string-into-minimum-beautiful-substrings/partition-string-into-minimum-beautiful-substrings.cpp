@@ -1,8 +1,6 @@
 class Solution {
 public:
     bool check(string&s,int start,int end){
-        if(s[start]=='0'||s[end]=='0')return false;
-        string temp;
         unordered_set<string>st;
         st.insert("11110100001001");
         st.insert("110000110101");
@@ -11,10 +9,7 @@ public:
         st.insert("1001110001");
         st.insert("1111101");
         st.insert("11001");
-        
-        for(int i=start;i<=end;i++){
-            temp+=s[i];
-        }
+        string temp=s.substr(start,end-start+1);
         if(st.find(temp)==st.end())return false;
         return true;
     }
