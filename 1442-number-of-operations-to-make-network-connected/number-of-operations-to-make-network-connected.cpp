@@ -27,17 +27,12 @@ public:
         for(int i=0;i<n;i++){
             parent[i]=i;
         }
-        //ans is number of group - 1;
         int group=0;
-        int extra=0;
         for(int i=0;i<m;i++){
             int a=connections[i][0];
             int b=connections[i][1];
-            if(find(a,parent)==find(b,parent)){
-                extra++;
-            }
-            else{
-                Union(a,b,parent,rank);
+            if(find(a,parent)!=find(b,parent)){
+                  Union(a,b,parent,rank);
             }
         }
         for(int i=0;i<n;i++){
