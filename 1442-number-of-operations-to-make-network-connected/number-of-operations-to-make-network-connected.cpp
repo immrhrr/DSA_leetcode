@@ -24,9 +24,7 @@ public:
         if(m<n-1)return -1;
         vector<int>parent(n,0);
         vector<int>rank(n,0);
-        for(int i=0;i<n;i++){
-            parent[i]=i;
-        }
+        iota(parent.begin(), parent.end(), 0);
         int group=0;
         for(int i=0;i<m;i++){
             int a=connections[i][0];
@@ -36,7 +34,7 @@ public:
             }
         }
         for(int i=0;i<n;i++){
-            if(parent[i]==i){
+            if(find(i,parent)==i){
                 group++;
             }
         }
