@@ -16,6 +16,7 @@ public:
                 solve(cookies,k,temp,ind+1,ans);
             }
             temp[op]-=cookies[ind];
+            if(temp[op] == 0) break;
         }
     }
     int distributeCookies(vector<int>& cookies, int k) {
