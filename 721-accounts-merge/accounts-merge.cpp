@@ -59,3 +59,7 @@ public:
         return temp;
     }
 };
+//step1: kaunsa email kaunsa person ka ->mp1(string ,int)
+//step2: find which index names are belonging to same person ->dsu
+//step3: merge the emails belonging to same person->mp2(int,set);
+//step4: keep the emails in sorted order->itterate mp2 to fill the ans vector
