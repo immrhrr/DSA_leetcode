@@ -51,7 +51,6 @@ public:
             string name=accounts[it.first][0];
             temp[curr].push_back(name);
             vector<string>arr(it.second.begin(),it.second.end());
-            sort(arr.begin(),arr.end());
             for(int i=0;i<arr.size();i++){
                 temp[curr].push_back(arr[i]);
             }
