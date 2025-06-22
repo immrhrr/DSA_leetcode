@@ -23,7 +23,7 @@ public:
 
         for (int i = 0; i < n; i++) {
             // dp[start][need]
-            vector<vector<int>> dp(n + 2, vector<int>(i + 2, -1));
+            vector<vector<int>> dp(n + 1, vector<int>(i + 2, -1));
             int cnt = solve(ans, 1, i + 1, i + 1, dp);
 
             if (cnt + 1 == ways[i]) {
