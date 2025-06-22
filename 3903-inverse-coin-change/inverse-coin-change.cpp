@@ -1,20 +1,26 @@
 class Solution {
 public:
-    int solve(vector<bool>& vis, int start, int end, int need, vector<vector<int>>& dp) {
-        if (need == 0) return 1;
-        if (start >= end || need < 0) return 0;
+    int solveTabulation(vector<bool>& vis, int end, int need) {
+        vector<vector<int>> dp(end, vector<int>(need + 1, 0));
 
-        if (dp[start][need] != -1) return dp[start][need];
-
-        int take = 0, notake = 0;
-
-        if (vis[start]) {
-            take = solve(vis, start, end, need - start, dp);
+        // Base case: 1 way to make sum 0
+        for (int i = 0; i < end; ++i) {
+            dp[i][0] = 1;
         }
 
-        notake = solve(vis, start + 1, end, need, dp);
+        for (int i = 1; i < end; ++i) {
+            for (int sum = 1; sum <= need; ++sum) {
+                // Not take i
+                dp[i][sum] = dp[i - 1][sum];
 
-        return dp[start][need] = take + notake;
+                // Take i (if it's marked in vis and sum allows)
+                if (vis[i] && sum - i >= 0) {
+                    dp[i][sum] += dp[i][sum - i];
+                }
+            }
+        }
+
+        return dp[end - 1][need];
     }
 
     vector<int> findCoins(vector<int>& ways) {
@@ -22,9 +28,7 @@ public:
         vector<bool> ans(n + 1, false);
 
         for (int i = 0; i < n; i++) {
-            // dp[start][need]
-            vector<vector<int>> dp(n + 1, vector<int>(i + 2, -1));
-            int cnt = solve(ans, 1, i + 1, i + 1, dp);
+            int cnt = solveTabulation(ans, i + 1, i + 1);  // [1..i] to form sum i+1
 
             if (cnt + 1 == ways[i]) {
                 ans[i + 1] = true;
