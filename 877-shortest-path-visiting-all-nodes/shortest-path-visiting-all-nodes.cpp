@@ -7,8 +7,8 @@ public:
         queue<pair<int,int>>q;
         int need=0;
         for(int i=0;i<n;i++){
-            q.push({i,pow(2,i)});
-            st.insert({i,pow(2,i)});
+            q.push({i,1<<i});
+            st.insert({i,1<<i});
             need=need|(1<<i);
         }
         int ans=0;
@@ -22,7 +22,7 @@ public:
                 if(mask==need)return ans;
                 for(int i=0;i<graph[node].size();i++){
                     int ngbr=graph[node][i];
-                    int temp=pow(2,ngbr);
+                    int temp=1<<ngbr;
                     if(st.find({ngbr,temp|mask})==st.end()){
                         st.insert({ngbr,temp|mask});
                         q.push({ngbr,temp|mask});
