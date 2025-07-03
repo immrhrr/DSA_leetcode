@@ -15,6 +15,8 @@ public:
                     if (individual[i].insert(temp).second) {
                         globalFreq[temp]++;
                     }
+                    // individual[i].insert(temp);
+                    // globalFreq[temp]++;
                 }
             }
         }
