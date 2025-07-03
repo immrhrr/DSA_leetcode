@@ -50,6 +50,9 @@ public:
             insert(word,root);
         }
         for(int i=words.size()-1;i>=0;i--){
+            if(ans.size()>words[i].size()){
+                return ans;
+            }
             if(check(words[i],root)){
                 if(ans.size()<words[i].size()){
                     ans=words[i];
