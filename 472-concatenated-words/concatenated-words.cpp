@@ -31,7 +31,7 @@ public:
             node = node->children[idx];
             if (node->isEnd) {
                 if (i == n - 1)
-                    return count >= 1;  // Ensure at least two words
+                    return true;  // Ensure at least two words
                 if (canForm(word, i + 1, count + 1))
                     return true;
             }
