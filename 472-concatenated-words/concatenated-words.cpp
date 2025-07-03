@@ -1,39 +1,59 @@
 class Solution {
 public:
-    unordered_set<string> st;
-    vector<string> ans;
+    struct TrieNode {
+        TrieNode* children[26];
+        bool isEnd;
+        TrieNode() {
+            isEnd = false;
+            for (int i = 0; i < 26; ++i) children[i] = nullptr;
+        }
+    };
 
-    static bool comp(const string &s1, const string &s2) {
-        return s1.size() < s2.size();
+    TrieNode* root = new TrieNode();
+    
+    void insert(const string& word) {
+        TrieNode* node = root;
+        for (char ch : word) {
+            int idx = ch - 'a';
+            if (!node->children[idx])
+                node->children[idx] = new TrieNode();
+            node = node->children[idx];
+        }
+        node->isEnd = true;
     }
 
-    bool check(const string &word, int ind,vector<int>&dp) {
+    bool canForm(const string& word, int start, int count) {
+        TrieNode* node = root;
         int n = word.size();
-        if (ind == n) return dp[ind]= true;
-        if(dp[ind]!=-1)return dp[ind];
-
-        for (int i = ind; i < n; ++i) {
-            string prefix = word.substr(ind, i - ind + 1);
-            if (st.find(prefix) != st.end()) {
-                if (check(word, i + 1,dp)) return dp[ind]=true;
+        for (int i = start; i < n; ++i) {
+            int idx = word[i] - 'a';
+            if (!node->children[idx]) return false;
+            node = node->children[idx];
+            if (node->isEnd) {
+                if (i == n - 1)
+                    return count >= 1;  // Ensure at least two words
+                if (canForm(word, i + 1, count + 1))
+                    return true;
             }
         }
-        return dp[ind]= false;
+        return false;
     }
 
-    vector<string> findAllConcatenatedWordsInADict(vector<string> &words) {
-        sort(words.begin(), words.end(), comp);
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        // Sort to ensure we build Trie using smaller words first
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
+            return a.size() < b.size();
+        });
 
-        for (string &word : words) {
+        vector<string> result;
+        for (string& word : words) {
             if (word.empty()) continue;
-            vector<int>dp(word.size()+1,-1);
-            if (check(word, 0,dp)) {
-                ans.push_back(word);
+            if (canForm(word, 0, 0)) {
+                result.push_back(word);
+            } else {
+                insert(word);  // Insert only if not concatenated
             }
-            // Insert only after checking so word doesn’t use itself
-            st.insert(word);
         }
-
-        return ans;
+        return result;
     }
 };
