@@ -4,26 +4,20 @@ public:
         int n = prices.size();
         if (n == 0) return 0;
 
-        vector<int> left(n, 0);   // Max profit for 1st transaction [0...i]
-        vector<int> right(n, 0);  // Max profit for 2nd transaction [i...n-1]
+        int first_buy = INT_MAX;
+        int first_profit = 0;
+        int second_buy = INT_MAX;
+        int second_profit = 0;
 
-        int min_price = prices[0];
-        for (int i = 1; i < n; ++i) {
-            min_price = min(min_price, prices[i]);
-            left[i] = max(left[i - 1], prices[i] - min_price);
+        for (int price : prices) {
+            first_buy = min(first_buy, price);
+            first_profit = max(first_profit, price - first_buy);
+
+            // Reduce price by first_profit => effective price after gaining first transaction
+            second_buy = min(second_buy, price - first_profit);
+            second_profit = max(second_profit, price - second_buy);
         }
 
-        int max_price = prices[n - 1];
-        for (int i = n - 2; i >= 0; --i) {
-            max_price = max(max_price, prices[i]);
-            right[i] = max(right[i + 1], max_price - prices[i]);
-        }
-
-        int max_profit = 0;
-        for (int i = 0; i < n; ++i) {
-            max_profit = max(max_profit, left[i] + right[i]);
-        }
-
-        return max_profit;
+        return second_profit;
     }
 };
