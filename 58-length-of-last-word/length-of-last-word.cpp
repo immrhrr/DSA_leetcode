@@ -13,7 +13,7 @@ public:
                 len++;
             }
             else{
-                return len;
+                break;
             }
 
         }
