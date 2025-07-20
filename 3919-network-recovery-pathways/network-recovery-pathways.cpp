@@ -5,8 +5,7 @@ public:
         priority_queue<T, vector<T>, greater<T>> pq;
         vector<long long> dist(n, LLONG_MAX);
 
-        if (!online[0]) return false;
-
+        
         pq.push({0, 0});
         dist[0] = 0;
 
