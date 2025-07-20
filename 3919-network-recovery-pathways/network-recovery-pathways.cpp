@@ -1,28 +1,28 @@
 class Solution {
 public:
     bool isPossible(int minEdgeCost, int n, vector<vector<pair<int, int>>>& adj, vector<bool>& online, long long k) {
-        using T = pair<long long, int>; // (cost_so_far, node)
-        priority_queue<T, vector<T>, greater<T>> pq;
+        queue<pair<int, long long>> q; // (node, cost_so_far)
         vector<long long> dist(n, LLONG_MAX);
-
         
-        pq.push({0, 0});
+        if (!online[0]) return false;
+
+        q.push({0, 0});
         dist[0] = 0;
 
-        while (!pq.empty()) {
-            auto [cost, u] = pq.top(); pq.pop();
+        while (!q.empty()) {
+            auto [u, cost] = q.front(); q.pop();
 
-            if (u == n - 1) {
-                return cost <= k;
+            if (u == n - 1 && cost <= k) {
+                return true;
             }
 
-            for (auto [v, c] : adj[u]) {
+            for (auto& [v, c] : adj[u]) {
                 if (!online[v] || c < minEdgeCost) continue;
 
                 long long new_cost = cost + c;
-                if (new_cost < dist[v]) {
+                if (new_cost <= k && new_cost < dist[v]) {
                     dist[v] = new_cost;
-                    pq.push({new_cost, v});
+                    q.push({v, new_cost});
                 }
             }
         }
@@ -37,7 +37,7 @@ public:
 
         for (auto& e : edges) {
             int u = e[0], v = e[1], c = e[2];
-            adj[u].push_back({v, c});
+            adj[u].emplace_back(v, c);
             maxEdge = max(maxEdge, c);
         }
 
@@ -48,7 +48,7 @@ public:
 
             if (isPossible(mid, n, adj, online, k)) {
                 ans = mid;
-                low = mid + 1; // try for a better (higher) minimum edge
+                low = mid + 1; // try to improve (maximize) minimum edge value
             } else {
                 high = mid - 1;
             }
