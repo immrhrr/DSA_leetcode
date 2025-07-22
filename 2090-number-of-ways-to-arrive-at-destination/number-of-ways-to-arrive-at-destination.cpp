@@ -1,45 +1,44 @@
 class Solution {
 public:
-    typedef pair<long long,int> P;
-    
+    int mod = 1e9 + 7;
     int countPaths(int n, vector<vector<int>>& roads) {
-        int mod=1e9+7;
-        vector<vector<P>>adj(n);
-        for(auto it:roads){
-            int u=it[0];
-            int v=it[1];
-            int w=it[2];
-            adj[u].push_back({v,w});
-            adj[v].push_back({u,w});
+        vector<vector<pair<int, int>>> adj(n);
+        for (auto it : roads) {
+            int u = it[0];
+            int v = it[1];
+            int t = it[2];
+            adj[u].push_back({v, t});
+            adj[v].push_back({u, t});
         }
-        priority_queue<P,vector<P>,greater<P>>pq;
-        vector<long long>dist(n,LLONG_MAX);
-        vector<int>count(n,0);
-        count[0]=1;
-        dist[0]=0;
-        pq.push({0,0});
-        while(!pq.empty()){
-            long long d=pq.top().first;
-            int u=pq.top().second;
-            pq.pop();
-            //d matlab ki kitna distance lagega source se u tak jaane mein
-            for(auto it:adj[u]){
-                int wt=it.second;
-                //wt matlab ki u se v jaane mein distane
-                int v=it.first;
-                if(wt+d==dist[v]){
-                    count[v]=(count[v]+count[u])%mod;
-                }
-                if(wt+d<dist[v]){
-                    dist[v]=d+wt;
-                    pq.push({dist[v],v});
-                    count[v]=count[u];
+        vector<long long> cost(n, LLONG_MAX);
+        vector<int> ways(n, 0);
+        ways[0] = 1;
+        cost[0] = 0;
+        //priority_queue<pair<int, long long>, vector<pair<int, long long>>,greater<pair<int, long long>>>pq;
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
 
+        pq.push({0, 0});
+        // cost,node;
+        while (!pq.empty()) {
+            auto it = pq.top();
+            pq.pop();
+            long long time = it.first;
+            int node = it.second;
+            if(cost[node]<time){
+                continue;
+            }
+            for (int i = 0; i < adj[node].size(); i++) {
+                int ngbr = adj[node][i].first;
+                int wt = adj[node][i].second;
+                if (cost[ngbr] > time + wt) {
+                    cost[ngbr] = time + wt;
+                    ways[ngbr] = ways[node];
+                    pq.push({cost[ngbr],ngbr});
+                } else if (cost[ngbr] == time + wt) {
+                    ways[ngbr] = (ways[ngbr]+ways[node])%mod;
                 }
             }
         }
-        return count[n-1];
-
-        
+        return ways[n-1];
     }
 };
