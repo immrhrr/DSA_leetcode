@@ -4,20 +4,21 @@ public:
         int n = bills.size();
         int five = 0;
         int ten = 0;
-        int twenty = 0;
+       
         for (int i = 0; i < n; i++) {
             if (bills[i] == 5) {
                 five++;
                 continue;
             } else if (bills[i] == 10) {
                 ten++;
+                //5
                 if (five > 0) {
                     five--;
                 } else {
                     return false;
                 }
             } else {
-                twenty++;
+               
                 // need 15
                 if (five < 1) {
                     return false;
