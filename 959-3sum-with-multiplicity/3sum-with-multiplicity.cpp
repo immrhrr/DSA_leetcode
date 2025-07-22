@@ -3,14 +3,11 @@ public:
     int threeSumMulti(vector<int>& arr, int target) {
         const int MOD = 1e9 + 7;
         unordered_map<int, long long> count;
-
         // Count frequency of each number
         for (int x : arr) {
             count[x]++;
         }
-
         long long ans = 0;
-
         // Iterate over all pairs (a, b) in the map
         for (auto& [a, ca] : count) {
             for (auto& [b, cb] : count) {
@@ -21,6 +18,7 @@ public:
                 if (a > b || b > c) continue;
 
                 long long cc = count[c];
+                if(cc==0)continue;
 
                 // Case 1: all values are the same (a == b == c)
                 if (a == b && b == c) {
