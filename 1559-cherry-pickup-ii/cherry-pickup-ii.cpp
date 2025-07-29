@@ -25,7 +25,7 @@ public:
                 return grid[r][c2];
             }
         }
-        if((c1>=0&&c1<cols&&c2>=0&&c2<cols)&&dp[r][c1][c2]!=-1){
+        if(dp[r][c1][c2]!=-1){
             return dp[r][c1][c2];
         }
         int maxi=INT_MIN;
