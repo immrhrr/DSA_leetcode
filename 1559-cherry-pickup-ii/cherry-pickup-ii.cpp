@@ -4,7 +4,7 @@ public:
               vector<vector<vector<int>>>& dp) {
         int rows = grid.size();
         int cols = grid[0].size();
-        if (c1 < 0 || c2 < 0 || c1 >= cols || c2 >= cols||r>=rows) {
+        if (c1 < 0 || c2 < 0 || c1 >= cols || c2 >= cols || r >= rows) {
             return -1e5;
         }
         if (r == rows - 1) {
@@ -21,25 +21,9 @@ public:
         for (int d1 = -1; d1 <= 1; d1++) {
             for (int d2 = -1; d2 <= 1; d2++) {
                 if (c1 == c2) {
-                    if (c1 >= 0 && c1 < cols) {
-                        maxi =
-                            max(maxi, grid[r][c1] + solve(grid, r + 1, c1 + d1,
-                                                          c2 + d2, dp));
-                    }
+                    maxi = max(maxi, grid[r][c1] + solve(grid, r + 1, c1 + d1,c2 + d2, dp));
                 } else {
-                    if (c1 >= 0 && c1 < cols && c2 >= 0 && c2 < cols) {
-                        maxi = max(
-                            maxi, grid[r][c1] + grid[r][c2] +
-                                      solve(grid, r + 1, c1 + d1, c2 + d2, dp));
-                    } else if (c1 >= 0 && c1 < cols) {
-                        maxi =
-                            max(maxi, grid[r][c1] + solve(grid, r + 1, c1 + d1,
-                                                          c2 + d2, dp));
-                    } else if (c2 >= 0 && c2 < cols) {
-                        maxi =
-                            max(maxi, grid[r][c2] + solve(grid, r + 1, c1 + d1,
-                                                          c2 + d2, dp));
-                    }
+                    maxi =max(maxi, grid[r][c1] + grid[r][c2] + solve(grid, r + 1, c1 + d1, c2 + d2, dp));
                 }
             }
         }
