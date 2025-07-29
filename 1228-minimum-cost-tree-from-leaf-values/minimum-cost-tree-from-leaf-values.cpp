@@ -1,13 +1,13 @@
 class Solution {
 public:
-    int solve(vector<int>& arr, int i, int j, vector<vector<int>>& dp,vector<vector<int>>&memo) {
+    int solve(int i, int j, vector<vector<int>>& dp,vector<vector<int>>&memo) {
         if (i >= j) {
             return 0; 
         }
         if(memo[i][j]!=-1)return  memo[i][j];
         int ans = INT_MAX;
         for (int k = i; k < j; k++) {
-            int temp = dp[i][k] * dp[k + 1][j] + solve(arr, i, k, dp,memo) + solve(arr, k + 1, j, dp,memo);
+            int temp = dp[i][k] * dp[k + 1][j] + solve(i, k, dp,memo) + solve(k + 1, j, dp,memo);
             ans = min(temp, ans);
         }
         return memo[i][j]= ans;
@@ -23,6 +23,6 @@ public:
             }
         }
         vector<vector<int>>memo(n,vector<int>(n,-1));
-        return solve(arr, 0, n - 1, dp,memo);
+        return solve(0, n - 1, dp,memo);
     }
 };
