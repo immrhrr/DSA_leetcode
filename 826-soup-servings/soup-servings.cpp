@@ -22,9 +22,8 @@ public:
         return dp[a][b]= 0.25*p;
     }
     double soupServings(int n) {
-        if(n>5000)return 1;
+        if(n>4275)return 1;
         dp.resize(n+1,vector<double>(n+1,-1.0));
-        
         return solve(n,n);
     }
 };
