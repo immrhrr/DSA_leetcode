@@ -35,7 +35,6 @@ public:
             }
             else{
                 clone->neighbors.push_back(mp[ngbr]);
-               
             }
         }
         return;
@@ -45,7 +44,7 @@ public:
         if(!node){
             return NULL;
         }
-        mp.clear();
+        //mp.clear();
         Node*clone=new Node(node->val);
         mp[node]=clone;
         dfs(node,clone);
