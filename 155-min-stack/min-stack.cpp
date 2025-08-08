@@ -4,7 +4,7 @@ public:
     long long mini;
 
     MinStack() {
-        mini = 0; // Will be set on first push
+        //mini = 0; // Will be set on first push
     }
 
     void push(int val) {
