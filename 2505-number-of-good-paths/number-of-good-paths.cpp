@@ -43,16 +43,22 @@ public:
         vector<bool> active(n, false);
         for (auto it : temp) {
             int curr_val = it.first;
+            //curr_val kaun kaunsa node pe hai woh arr mein stored hai
             vector<int> arr;
             arr = it.second;
             for (int i = 0; i < arr.size(); i++) {
+                active[arr[i]] = true;
                 for (int j = 0; j < adj[arr[i]].size(); j++) {
+                    //u->arr[i]
+                    //v->adj[arr[i]][j]
                     int ngbr = adj[arr[i]][j];
+                    //agar active hai node v toh join them
                     if (active[ngbr]) {
                         Union(arr[i], adj[arr[i]][j]);
                     }
                 }
-                active[arr[i]] = true;
+                //u ko activate kar do ab 
+               // active[arr[i]] = true;
             }
             vector<int> parent2;
             for (auto it : arr) {
