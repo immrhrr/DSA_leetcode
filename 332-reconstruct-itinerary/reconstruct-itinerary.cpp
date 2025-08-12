@@ -1,26 +1,28 @@
 class Solution {
 public:
-    unordered_map<string, priority_queue<string, vector<string>, greater<string>>> adj;
-    vector<string> result;
-
-    void dfs(string u) {
-        auto &pq = adj[u];
-        while (!pq.empty()) {
-            string v = pq.top();
-            pq.pop();
-            dfs(v);
-        }
-        result.push_back(u);
-    }
-
+    unordered_map<string,priority_queue<string,vector<string>,greater<string>>>adj;
     vector<string> findItinerary(vector<vector<string>>& tickets) {
-        // Build adjacency list with min-heap for lexicographic order
-        for (auto &t : tickets) {
-            adj[t[0]].push(t[1]);
+        for(auto &t:tickets){
+            string u=t[0];
+            string v=t[1];
+            adj[u].push(v);
         }
-
-        dfs("JFK");
-        reverse(result.begin(), result.end());
-        return result;
+        stack<string>st;
+        st.push("JFK");
+        vector<string>ans;
+        while(!st.empty()){
+            string curr=st.top();
+            if(adj[curr].size()==0){
+                ans.push_back(curr);
+                st.pop();
+            }
+            else{
+                string nxt=adj[curr].top();
+                adj[curr].pop();
+                st.push(nxt);
+            }
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 };
