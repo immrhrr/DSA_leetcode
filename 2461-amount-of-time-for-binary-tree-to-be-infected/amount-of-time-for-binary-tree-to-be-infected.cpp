@@ -11,37 +11,41 @@
  */
 class Solution {
 public:
-    int burn(TreeNode* root,int &start,int &timer,TreeNode* &burn_node){
-        if(root==NULL){
-            return 0;
+    unordered_map<int,vector<int>>adj;
+    void make_graph(TreeNode*root,int parent){
+        if(!root)return;
+        if(parent!=-1){
+            adj[root->val].push_back(parent);
         }
-        if(root->val==start){
-            burn_node=root;
-            return -1;
+        if(root->left){
+            adj[root->val].push_back(root->left->val);
         }
-        int left=burn(root->left,start,timer,burn_node);
-        int right=burn(root->right,start,timer,burn_node);
-        if(left<0){
-            timer=max(timer,abs(left)+right);
-            return left-1;
+        if(root->right){
+            adj[root->val].push_back(root->right->val);
         }
-        if(right<0){
-            timer=max(timer,abs(right)+left);
-            return right-1;
-        }
-        return 1+max(left,right);
-    }
-    int height(TreeNode* root){
-        if(root==NULL){
-            return 0;
-        }
-        return 1+max(height(root->left),height(root->right));
+        make_graph(root->left,root->val);
+        make_graph(root->right,root->val);
     }
     int amountOfTime(TreeNode* root, int start) {
-        int timer=0;
-        TreeNode* burn_node=NULL;
-        burn(root,start,timer,burn_node);
-        int temp=height(burn_node);
-        return max(timer,temp-1);
+        make_graph(root,-1);
+        queue<pair<int,int>>q;
+        q.push({start,-1});
+        int time=0;
+        
+        while(!q.empty()){
+            int m=q.size();
+            time++;
+            while(m--){
+                int curr=q.front().first;
+                int parent=q.front().second;
+                q.pop();
+                for(int i=0;i<adj[curr].size();i++){
+                    int ngbr=adj[curr][i];
+                    if(ngbr==parent)continue;
+                    q.push({ngbr,curr});
+                }
+            }
+        }
+        return time-1;
     }
 };
