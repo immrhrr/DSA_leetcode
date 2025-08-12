@@ -47,6 +47,7 @@ public:
             vector<int> arr;
             arr = it.second;
             for (int i = 0; i < arr.size(); i++) {
+                //u ko activate kar do ab 
                 active[arr[i]] = true;
                 for (int j = 0; j < adj[arr[i]].size(); j++) {
                     //u->arr[i]
@@ -57,13 +58,14 @@ public:
                         Union(arr[i], adj[arr[i]][j]);
                     }
                 }
-                //u ko activate kar do ab 
-               // active[arr[i]] = true;
             }
+            //ab same value wala same component mein bhi toh hona hai
+            //isliye ab ek naya parent2 batayega ki kaunsa active nodes kaunsa component mein hai
             vector<int> parent2;
             for (auto it : arr) {
                 parent2.push_back(find(it));
             }
+            //kitne hain same val wala node ek comp mein jldi cnt krne k liye sorting
             sort(parent2.begin(), parent2.end());
             int sz = parent2.size();
             for (int j = 0; j < sz; j++) {
@@ -74,6 +76,7 @@ public:
                     cnt++;
                 }
                 j--;
+                //formula hai bas ye
                 res += (cnt * (cnt - 1)) / 2;
             }
         }
