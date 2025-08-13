@@ -11,16 +11,20 @@
  */
 class Solution {
 public:
-    bool func(TreeNode* root,int target){
-         if(root==NULL){
-            return false;
+    bool solve(TreeNode*root,int&t,int curr){
+        if(!root)return false;
+        if(!root->left&&!root->right){
+            return t==curr+root->val;
         }
-        if(root->left==NULL&&root->right==NULL){
-            return target==root->val;
-        }
-       return func(root->left,target-root->val)||func(root->right,target-root->val);
+        bool l=solve(root->left,t,curr+root->val);
+        if(l)return l;
+        bool r=solve(root->right,t,curr+root->val);
+        return l||r;
     }
-    bool hasPathSum(TreeNode* root, int target) {
-        return func(root,target);
+    bool hasPathSum(TreeNode* root, int t) {
+        if(!root)return false;
+        int curr=0;
+        return solve(root,t,curr);
+        
     }
 };
