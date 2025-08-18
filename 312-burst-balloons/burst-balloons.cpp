@@ -9,9 +9,9 @@ public:
         int ans = INT_MIN;
         int temp = 0;
         for (int k = i; k <= j; k++) {
-            int l = nums[i - 1];
-            int r = nums[j + 1];
-            temp = (l * nums[k] * r) + solve(nums, i, k - 1) +
+            // int l = nums[i - 1];
+            // int r = nums[j + 1];
+            temp = (nums[i - 1] * nums[k] * nums[j + 1]) + solve(nums, i, k - 1) +
                    solve(nums, k + 1, j);
             ans = max(ans, temp);
         }
