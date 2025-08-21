@@ -10,61 +10,43 @@
  */
 class Solution {
 public:
-    void Reverse(ListNode* &head){
-        if(head==NULL||head->next==NULL){
-            return ;
-        }
-        ListNode* present=head;
-        ListNode* past=NULL;
-        ListNode* future=NULL;
-        while(present){
-            future=present->next;
-            present->next=past;
-            past=present;
-            present=future;
-        }
-        head=past;
-        return;
-    }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        Reverse(l1);
-        Reverse(l2);
+        stack<int>s1;
+        stack<int>s2;
+        ListNode*t1=l1;
+        ListNode*t2=l2;
+        while(t1){
+            s1.push(t1->val);
+            t1=t1->next;
+        }
+        while(t2){
+            s2.push(t2->val);
+            t2=t2->next;
+        }
+        int sum=0;
         int carry=0;
-        ListNode* temp1=l1;
-        ListNode* temp2=l2;
-        ListNode* ans=new ListNode(0);
-        ListNode* tail=ans;
-        while(temp1&&temp2){
-            int temp=temp1->val+temp2->val+carry;
-            int digit=temp%10;
-            carry=temp/10;
-            tail->next=new ListNode(digit);
-            temp1=temp1->next;
-            temp2=temp2->next;
-            tail=tail->next;
+        ListNode*head=NULL;
+        while(!s1.empty()||!s2.empty()){
+            if(!s1.empty()){
+                sum+=s1.top();
+                s1.pop();
+            }
+            if(!s2.empty()){
+                sum+=s2.top();
+                s2.pop();
+            }
+            ListNode* temp=new ListNode(sum%10);
+            temp->next=head;
+            head=temp;
+            carry=sum/10;
+            sum=carry;
         }
-        while(temp1){
-            int temp=temp1->val+carry;
-            int digit=temp%10;
-            carry=temp/10;
-            tail->next=new ListNode(digit);
-            temp1=temp1->next;
-            tail=tail->next;
+        if(sum>0){
+            ListNode* temp=new ListNode(sum%10);
+            temp->next=head;
+            head=temp;
         }
-        while(temp2){
-            int temp=temp2->val+carry;
-            int digit=temp%10;
-            carry=temp/10;
-            tail->next=new ListNode(digit);
-            temp2=temp2->next;
-            tail=tail->next;
-        }
-        if(carry>0){
-            tail->next=new ListNode(carry);
-        }
-        ans=ans->next;
-        Reverse(ans);
-      
-        return ans;
+        return head;
+        
     }
 };
