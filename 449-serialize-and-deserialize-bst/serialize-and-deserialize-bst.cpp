@@ -9,71 +9,49 @@
  */
 class Codec {
 public:
-    // Encodes a tree to a single string.
+    // Encodes a BST to a single string (preorder traversal).
     string serialize(TreeNode* root) {
-        if (!root) return "";
-
-        string s = "";
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            TreeNode* curNode = q.front();
-            q.pop();
-
-            if (curNode == NULL) {
-                s.append("#,");
-            } else {
-                s.append(to_string(curNode->val) + ',');
-                q.push(curNode->left);
-                q.push(curNode->right);
-            }
-        }
+        string s;
+        preorder(root, s);
         return s;
     }
 
-    // Decodes your encoded data to tree.
+    void preorder(TreeNode* root, string &s) {
+        if (!root) return;
+        s += to_string(root->val) + ",";
+        preorder(root->left, s);
+        preorder(root->right, s);
+    }
+
+    // Decodes your encoded data to BST.
     TreeNode* deserialize(string data) {
-        if (data.size() == 0) return NULL;
-
-        stringstream s(data);
+        if (data.empty()) return NULL;
+        stringstream ss(data);
         string str;
-        getline(s, str, ',');   // root value
+        vector<int> vals;
 
-        TreeNode* root = new TreeNode(stoi(str));
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            TreeNode* node = q.front();
-            q.pop();
-
-            // left child
-            getline(s, str, ',');
-            if (str == "#") {
-                node->left = NULL;
-            } else {
-                TreeNode* leftNode = new TreeNode(stoi(str));
-                node->left = leftNode;
-                q.push(leftNode);
-            }
-
-            // right child
-            getline(s, str, ',');
-            if (str == "#") {
-                node->right = NULL;
-            } else {
-                TreeNode* rightNode = new TreeNode(stoi(str));
-                node->right = rightNode;
-                q.push(rightNode);
-            }
+        while (getline(ss, str, ',')) {
+            if (!str.empty()) vals.push_back(stoi(str));
         }
-        return root;
+
+        int idx = 0;
+        return build(vals, idx, INT_MIN, INT_MAX);
+    }
+
+    TreeNode* build(vector<int> &vals, int &idx, int low, int high) {
+        if (idx >= vals.size()) return NULL;
+        int val = vals[idx];
+        if (val < low || val > high) return NULL;
+
+        TreeNode* node = new TreeNode(val);
+        idx++;
+        node->left = build(vals, idx, low, val);
+        node->right = build(vals, idx, val, high);
+        return node;
     }
 };
 
-// Your Codec object will be instantiated and called as such:
+// Usage
 // Codec ser, deser;
 // string tree = ser.serialize(root);
 // TreeNode* ans = deser.deserialize(tree);
-// return ans;
