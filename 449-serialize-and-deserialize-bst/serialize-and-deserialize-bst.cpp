@@ -9,68 +9,47 @@
  */
 class Codec {
 public:
-
-    // Encodes a tree to a single string.
+    // Encodes a BST to a single string.
     string serialize(TreeNode* root) {
-        if (!root) return "";
         string result;
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            TreeNode* node = q.front();
-            q.pop();
-
-            if (node) {
-                result += to_string(node->val) + ",";
-                q.push(node->left);
-                q.push(node->right);
-            } else {
-                result += "#,";
-            }
-        }
+        preorder(root, result);
         return result;
     }
 
-    // Decodes your encoded data to tree.
+    // Decodes your encoded data to BST.
     TreeNode* deserialize(string data) {
-        if (data.size() == 0) return NULL;
+        if (data.empty()) return nullptr;
 
-        stringstream s(data);
-        string str;
-
-        // root node value
-        getline(s, str, ',');
-        TreeNode* root = new TreeNode(stoi(str));
-
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            TreeNode* node = q.front();
-            q.pop();
-
-            // process left child
-            if (!getline(s, str, ',')) break;
-            if (str == "#") {
-                node->left = NULL;
-            } else {
-                TreeNode* leftNode = new TreeNode(stoi(str));
-                node->left = leftNode;
-                q.push(leftNode);
-            }
-
-            // process right child
-            if (!getline(s, str, ',')) break;
-            if (str == "#") {
-                node->right = NULL;
-            } else {
-                TreeNode* rightNode = new TreeNode(stoi(str));
-                node->right = rightNode;
-                q.push(rightNode);
-            }
+        stringstream ss(data);
+        vector<int> values;
+        string val;
+        while (ss >> val) {
+            values.push_back(stoi(val));
         }
 
+        int index = 0;
+        return build(values, index, INT_MIN, INT_MAX);
+    }
+
+private:
+    // Helper for preorder traversal
+    void preorder(TreeNode* root, string &result) {
+        if (!root) return;
+        result += to_string(root->val) + " ";
+        preorder(root->left, result);
+        preorder(root->right, result);
+    }
+
+    // Helper to rebuild tree using bounds
+    TreeNode* build(vector<int>& values, int &index, int lower, int upper) {
+        if (index == values.size()) return nullptr;
+        int val = values[index];
+        if (val < lower || val > upper) return nullptr;
+
+        TreeNode* root = new TreeNode(val);
+        index++;
+        root->left = build(values, index, lower, val);
+        root->right = build(values, index, val, upper);
         return root;
     }
 };
