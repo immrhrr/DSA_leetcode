@@ -9,27 +9,27 @@
  */
 class Codec {
 public:
-
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
         if (!root) return "";
-        string result;
+
+        string s = "";
         queue<TreeNode*> q;
         q.push(root);
 
         while (!q.empty()) {
-            TreeNode* node = q.front();
+            TreeNode* curNode = q.front();
             q.pop();
 
-            if (node) {
-                result += to_string(node->val) + ",";
-                q.push(node->left);
-                q.push(node->right);
+            if (curNode == NULL) {
+                s.append("#,");
             } else {
-                result += "#,";
+                s.append(to_string(curNode->val) + ',');
+                q.push(curNode->left);
+                q.push(curNode->right);
             }
         }
-        return result;
+        return s;
     }
 
     // Decodes your encoded data to tree.
@@ -38,11 +38,9 @@ public:
 
         stringstream s(data);
         string str;
+        getline(s, str, ',');   // root value
 
-        // root node value
-        getline(s, str, ',');
         TreeNode* root = new TreeNode(stoi(str));
-
         queue<TreeNode*> q;
         q.push(root);
 
@@ -50,8 +48,8 @@ public:
             TreeNode* node = q.front();
             q.pop();
 
-            // process left child
-            if (!getline(s, str, ',')) break;
+            // left child
+            getline(s, str, ',');
             if (str == "#") {
                 node->left = NULL;
             } else {
@@ -60,8 +58,8 @@ public:
                 q.push(leftNode);
             }
 
-            // process right child
-            if (!getline(s, str, ',')) break;
+            // right child
+            getline(s, str, ',');
             if (str == "#") {
                 node->right = NULL;
             } else {
@@ -70,14 +68,12 @@ public:
                 q.push(rightNode);
             }
         }
-
         return root;
     }
 };
 
 // Your Codec object will be instantiated and called as such:
-// Codec* ser = new Codec();
-// Codec* deser = new Codec();
-// string tree = ser->serialize(root);
-// TreeNode* ans = deser->deserialize(tree);
+// Codec ser, deser;
+// string tree = ser.serialize(root);
+// TreeNode* ans = deser.deserialize(tree);
 // return ans;
