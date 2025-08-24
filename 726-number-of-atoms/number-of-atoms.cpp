@@ -1,57 +1,72 @@
+//Using stack
+//T.C : O(n^2)
+//S.C : O(n)
 class Solution {
 public:
-    map<string, int> dfs(string str, int& i) {
-        int n = str.size();
-        map<string, int> mp;
+    typedef unordered_map<string, int> MAP;
+
+    string countOfAtoms(string formula) {
+        int n = formula.length();
+        
+        stack<MAP> st;
+        st.push(MAP());
+
+        int i = 0;
 
         while (i < n) {
-            if (str[i] == '(') {
+            if (formula[i] == '(') {
+                st.push(MAP());
                 i++;
-                auto t = dfs(str, i);
-                int left = i;
-                while (i < n && isdigit(str[i])) {
+            } else if (formula[i] == ')') {
+                MAP currMap = st.top();
+                st.pop();
+                i++;
+                string multiplier;
+                while (i < formula.length() && isdigit(formula[i])) {
+                    multiplier += formula[i];
                     i++;
                 }
-                int cnt = 1;
-                if (i > left) {
-                    cnt = stoi(str.substr(left, i - left));
+                if (!multiplier.empty()) {
+                    int mult = stoi(multiplier);
+                    for (auto& [atom, count] : currMap) {
+                        currMap[atom] = count * mult;
+                    }
                 }
-                for (auto& [k, v] : t) {
-                    mp[k] += v * cnt;
+
+                for (auto& [atom, count] : currMap) {
+                    st.top()[atom] += count;
                 }
-            } else if (str[i] == ')') {
-                i++;
-                break;
             } else {
-                int left = i;
+                string currAtom;
+                currAtom += formula[i];
                 i++;
-                while (i < n && str[i] >= 'a' && str[i] <= 'z') {
+                while (i < formula.length() && islower(formula[i])) {
+                    currAtom += formula[i];
                     i++;
                 }
-                string key = str.substr(left, i - left);
-                left = i;
-                while (i < n && isdigit(str[i])) {
+
+                string currCount;
+                while (i < formula.length() && isdigit(formula[i])) {
+                    currCount += formula[i];
                     i++;
                 }
-                int cnt = 1;
-                if (i > left) {
-                    cnt = stoi(str.substr(left, i - left));
-                }
-                mp[key] += cnt;
+
+                int count = currCount.empty() ? 1 : stoi(currCount);
+                st.top()[currAtom] += count;
+            }
+ 
+        }
+        
+        map<string, int> sortedMap(begin(st.top()), end(st.top()));
+
+        string result;
+        for (auto& [atom, count] : sortedMap) {
+            result += atom;
+            if (count > 1) {
+                result += to_string(count);
             }
         }
 
-        return mp;
-    }
-    string countOfAtoms(string formula) {
-        int i = 0;
-        auto mp = dfs(formula, i);
-        stringstream ss;
-
-        for (auto& [k, v] : mp) {
-            ss << k;
-            if (v > 1) ss << v;
-        }
-        return ss.str();
+        return result;
     }
 };
