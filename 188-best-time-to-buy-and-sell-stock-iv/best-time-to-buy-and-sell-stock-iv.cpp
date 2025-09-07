@@ -1,44 +1,31 @@
 class Solution {
 public:
-    int solve(vector<int>& prices, int k, int state, int ind,
-                    vector<vector<vector<int>>>& dp) {
-        int n = prices.size();
-        if (ind >= n) {
-            return state == 0 ? 0 : INT_MIN;
+    int solve(vector<int>&prices,int k,int ind,bool can_buy,vector<vector<vector<int>>>&dp){
+        int n=prices.size();
+        if(k<=0||ind>=n)return 0;
+        if(dp[ind][k][can_buy]!=-1e5)return dp[ind][k][can_buy];
+
+        if(can_buy){
+            int buy=0;
+            int nobuy=0;
+            buy=-prices[ind]+solve(prices,k,ind+1,false,dp);
+            nobuy=solve(prices,k,ind+1,true,dp);
+            return dp[ind][k][can_buy]= max(buy,nobuy);
+
         }
-        if (k == 0) {
-            return state == 0 ? 0 : INT_MIN;
+        else{
+            int sell=0;
+            int nosell=0;
+            sell=prices[ind]+solve(prices,k-1,ind+1,true,dp);
+            nosell=solve(prices,k,ind+1,false,dp);
+            return  dp[ind][k][can_buy]=max(sell,nosell);
+
         }
-        if (dp[k][state][ind] != INT_MAX) {
-            return dp[k][state][ind];
-        }
-        int ans = 0;
-        if (state == 0) {
-            int buy = solve(prices, k, 1, ind + 1, dp);
-            int skip = solve(prices, k, 0, ind + 1, dp);
-            int net_buy =
-                (buy == INT_MIN) ? INT_MIN : buy - prices[ind];
-            ans = max({skip, net_buy});
-        } else if (state == 1) {
-            int sell = solve(prices, k - 1, 0, ind + 1, dp);
-            int skip = solve(prices, k, 1, ind + 1, dp);
-            int net_sell =
-                (sell == INT_MIN) ? INT_MIN : sell + prices[ind];
-            ans = max({skip, net_sell});
-        } else {
-            int buy = solve(prices, k - 1, 0, ind + 1, dp);
-            int skip = solve(prices, k, 2, ind + 1, dp);
-            int net_buy =
-                (buy == INT_MIN) ? INT_MIN : buy - prices[ind];
-            ans = max({skip, net_buy});
-        }
-        return dp[k][state][ind] = ans;
+
     }
     int maxProfit(int k, vector<int>& prices) {
-        int state = 0;
-        int ind = 0;
-        int n = prices.size();
-        vector<vector<vector<int>>> dp(k + 1,vector<vector<int>>(4, vector<int>(n + 1, INT_MAX)));
-        return solve(prices, k, state, ind, dp);
+        int n=prices.size();
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(k+1,vector<int>(2,-1e5)));
+        return solve(prices,k,0,true,dp);
     }
 };
