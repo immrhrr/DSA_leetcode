@@ -1,23 +1,31 @@
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-        string s1=s;
-        string s2=s;
-        reverse(s2.begin(),s2.end());
-        int n=s.size();
-        int ans=0;
-        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
-        for(int i=1;i<=n;i++){
-            for(int j=1;j<=n;j++){
-                if(s1[i-1]==s2[j-1]){
-                    dp[i][j]=1+dp[i-1][j-1];
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(n, 0));
+
+        // Single letters are palindromes of length 1
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+
+        // Build the table
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i + len - 1 < n; i++) {
+                int j = i + len - 1;
+
+                if (s[i] == s[j]) {
+                    if (len == 2) {
+                        dp[i][j] = 2;  // two equal chars
+                    } else {
+                        dp[i][j] = 2 + dp[i+1][j-1];
+                    }
+                } else {
+                    dp[i][j] = max(dp[i+1][j], dp[i][j-1]);
                 }
-                else{
-                    dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
-                }
-                ans=max(ans,dp[i][j]);
             }
         }
-        return ans;
+
+        return dp[0][n-1];
     }
 };
