@@ -10,38 +10,27 @@
  */
 class Solution {
 public:
-    class compare{
-        public:
-        bool operator()(ListNode*a,ListNode*b){
-            return a->val>b->val;
-        }
-    };
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if(lists.size()==0){
-            return NULL;
-        }
-        priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+        priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>pq;
         for(int i=0;i<lists.size();i++){
             if(lists[i]!=NULL){
-                pq.push(lists[i]);
+              int val=lists[i]->val;
+              pq.push({val,lists[i]});
             }
+            
         }
-        ListNode* root=new ListNode(0);
-        ListNode* temp,*tail;
-        tail=root;
+        ListNode* node=new ListNode(-1);
+        ListNode* head=node;
         while(!pq.empty()){
-            temp=pq.top();
+            ListNode* curr=pq.top().second;
+            node->next=curr;
+            node=node->next;
             pq.pop();
-            if(temp==NULL){
-                continue;
-            }
-            tail->next=temp;
-            tail=temp;
-            if(temp->next){
-                pq.push(temp->next);
+            if(curr->next){
+                pq.push({curr->next->val,curr->next});
             }
         }
-        return root->next;
-
+        return head->next;
+        
     }
 };
