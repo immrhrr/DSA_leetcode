@@ -1,26 +1,26 @@
 class Solution {
 public:
-    bool solve(vector<int>& arr, int curr, int ind, vector<vector<int>>& dp) {
-        int n = arr.size();
-        if (curr < 0) return false;
-        if (curr == 0) return true;
-        if (ind >= n) return false;
-
-        if (dp[curr][ind] != -1) return dp[curr][ind];
-
-        bool take = solve(arr, curr - arr[ind], ind + 1, dp);
-        if (take) return dp[curr][ind] = true;
-
-        bool notake = solve(arr, curr, ind + 1, dp);
-        return dp[curr][ind] = notake;
-    }
-
     bool canPartition(vector<int>& nums) {
+        int n=nums.size();
         int tot=accumulate(nums.begin(),nums.end(),0);
         if(tot%2==1)return false;
-        int sum=tot/2;
-        vector<vector<int>> dp(sum + 1, vector<int>(nums.size() + 1, -1));
-        return solve(nums, sum, 0, dp);
-        
+        int m=tot/2;
+        vector<vector<bool>>dp(n+1,vector<bool>(m+1,false));
+        //row matlab index
+        //col matlab sum
+        for(int i=0;i<=n;i++){
+            dp[i][0]=true;
+        }
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                bool notake=dp[i-1][j];
+                bool take=false;
+                if(j-nums[i-1]>=0&&dp[i-1][j-nums[i-1]]){
+                    take=true;
+                }
+                dp[i][j]=take|notake;
+            }
+        }
+        return dp[n][m];
     }
 };
