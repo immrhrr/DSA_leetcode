@@ -1,22 +1,25 @@
 class Solution {
 public:
-    int solve(vector<int>&coins,int amount,int ind,vector<vector<int>>&dp){
-        int n=coins.size();
+    int change(int tot, vector<int>& coins) {
+        int n = coins.size();
+        vector<vector<unsigned long long>> dp(n + 1, vector<unsigned long long>(tot + 1, 0));
 
-        if(amount<0||ind>=n)return 0;
-        if(amount==0)return 1;
-        if(dp[ind][amount]!=-1)return dp[ind][amount];
-        int take=0;
-        int notake=0;
-        if(coins[ind]<=amount){
-            take=solve(coins,amount-coins[ind],ind,dp);
+        // Base case: 1 way to make sum 0 (empty set)
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
         }
-        notake=solve(coins,amount,ind+1,dp);
-        return dp[ind][amount] =take+notake;
-    }
-    int change(int amount, vector<int>& coins) {
-        vector<vector<int>>dp(301,vector<int>(5001,-1));
-        return solve(coins,amount,0,dp);
-        
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= tot; j++) {
+                unsigned long long notake = dp[i - 1][j]; // don't use coin[i-1]
+                unsigned long long  take = 0;
+                if (j - coins[i - 1] >= 0) {
+                    take = dp[i][j - coins[i - 1]]; // use coin[i-1]
+                }
+                dp[i][j] = notake + take;
+            }
+        }
+
+        return (int) dp[n][tot];
     }
 };
