@@ -1,23 +1,18 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        if (n == 0) return 0;
-
-        int first_buy = INT_MAX;
-        int first_profit = 0;
-        int second_buy = INT_MAX;
-        int second_profit = 0;
-
-        for (int price : prices) {
-            first_buy = min(first_buy, price);
-            first_profit = max(first_profit, price - first_buy);
-
-            // Reduce price by first_profit => effective price after gaining first transaction
-            second_buy = min(second_buy, price - first_profit);
-            second_profit = max(second_profit, price - second_buy);
+        int n=prices.size();
+        int b1=INT_MAX;
+        int p1=0;
+        int b2=INT_MAX;
+        int p2=0;
+        for(int i=0;i<n;i++){
+            b1=min(b1,prices[i]);
+            p1=max(p1,prices[i]-b1);
+            b2=min(b2,prices[i]-p1);
+            p2=max(p2,prices[i]-b2);
         }
-
-        return second_profit;
+        return p2;
+        
     }
 };
