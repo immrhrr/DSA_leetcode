@@ -1,19 +1,18 @@
 class Solution {
 public:
     int maxFrequencyElements(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> frq(101, 0);
-        int maxi = 0;
-        for (int i = 0; i < n; i++) {
-            frq[nums[i]]++;
-            maxi = max(maxi, frq[nums[i]]);
-        }
-        int ans = 0;
-        for (int i = 0; i < 101; i++) {
-            if (frq[i] == maxi) {
-                ans += maxi;
+        vector<int> frq(101, 0);  // freq of each number
+        int maxi = 0, countMax = 0;
+
+        for (int x : nums) {
+            frq[x]++;
+            if (frq[x] > maxi) {
+                maxi = frq[x];       // new maximum frequency
+                countMax = 1;        // reset count to this element
+            } else if (frq[x] == maxi) {
+                countMax++;          // another element reached max freq
             }
         }
-        return ans;
+        return maxi * countMax;
     }
 };
