@@ -4,9 +4,8 @@ public:
         int n=s.size();
         int ans=0;
         for(int i=0;i<n;i++){
-            ans+=((i+1)*(26-(s[i]-'a')));
+            ans=ans+((i+1)*('z'+1-s[i]));
         }
         return ans;
-        
     }
 };
