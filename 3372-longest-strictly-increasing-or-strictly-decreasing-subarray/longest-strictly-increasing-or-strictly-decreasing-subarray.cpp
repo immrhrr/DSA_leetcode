@@ -1,27 +1,38 @@
 class Solution {
 public:
-    int longestMonotonicSubarray(vector<int>& nums) {
-        int n = nums.size();
-        int inc = 1;
-        int dec = 1;
-        int ans = 1;
-        for (int i = 1; i < n; i++) {
-            if (nums[i] > nums[i - 1]) {
-                inc++;
-
-            } else {
-                ans = max(ans, inc);
-                inc = 1;
-            }
-            if (nums[i] < nums[i - 1]) {
-                dec++;
-
-            } else {
-                ans = max(ans, dec);
-                dec = 1;
+    bool solve(int i,int j,vector<int>&nums){
+        if(nums[i]==nums[j])return false;
+        bool increasing=true;
+        for(int ind=i+1;ind<=j;ind++){
+            if(nums[ind]<=nums[ind-1]){
+                increasing =false;
+                break;
             }
         }
-        ans=max({ans,inc,dec});
+        if(increasing)return true;
+        
+        bool decreasing =true;
+        for(int ind=i+1;ind<=j;ind++){
+            if(nums[ind]>=nums[ind-1]){
+                decreasing =false;
+                break;
+            }
+        }
+
+        return increasing || decreasing ;
+
+    }
+    int longestMonotonicSubarray(vector<int>& nums) {
+        int n=nums.size();
+        int ans=1;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                bool flag=solve(i,j,nums);
+                if(flag){
+                    ans=max(ans,j-i+1);
+                }
+            }
+        }
         return ans;
     }
 };
